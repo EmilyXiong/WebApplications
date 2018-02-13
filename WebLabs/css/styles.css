@@ -1,0 +1,46 @@
+body 
+    {
+        background-image: url("http://40.media.tumblr.com/409f04d7004400bf67894bbd00f85e6c/tumblr_novhnrwKja1ru3nbdo3_400.png");
+    }
+
+h1 
+    { 
+    font-size: 2.2em;
+    text-align: center;
+    color: rgb(117, 154, 189)
+    
+} 
+
+h2 
+    { 
+    font-size: 2.0em; 
+    text-align: center;
+    color: rgb(117, 154, 189)
+} 
+
+h3 
+    { 
+    font-size: 1.8em; 
+    text-align: center;
+    color: rgb(117, 154, 189)
+} 
+
+h4 
+    { 
+    font-size: 1.6em; 
+    text-align: center;
+    color: rgb(255, 255, 230)
+} 
+
+h5 
+    { 
+    font-size: 1.4em;  
+    text-align: center;
+    color: rgb(255, 255, 230)
+} 
+p 
+    { 
+    font-size: 1.2em;   
+    text-align: center;
+    color: rgb(255, 255, 230)
+}

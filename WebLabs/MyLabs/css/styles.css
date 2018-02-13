@@ -1,0 +1,47 @@
+body 
+    {
+        background-image: url("https://s-media-cache-ak0.pinimg.com/736x/6f/f9/0c/6ff90c9e54d637e5a8695967d67ac100--pastel-sky-pastel-colours.jpg");
+    }
+
+h1 
+    { 
+    font-size: 2.2em;
+    text-align: center;
+    color: rgb(153, 153, 255)
+    
+} 
+
+h2 
+    { 
+    font-size: 2.0em; 
+    text-align: center;
+    color: rgb(153, 153, 255)
+} 
+
+h3 
+    { 
+    font-size: 1.8em; 
+    text-align: center;
+    color: rgb(153, 153, 255)
+} 
+
+h4 
+    { 
+    font-size: 1.6em; 
+    text-align: center;
+    color: rgb(153, 153, 255)
+} 
+
+h5 
+    { 
+    font-size: 1.4em;  
+    text-align: center;
+    color: rgb(153, 153, 255)
+} 
+
+p 
+    { 
+    font-size: 1.2em;   
+    text-align: center;
+    color: rgb(153, 153, 255)
+}

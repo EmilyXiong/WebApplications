@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Virtupet Home</title>
+    <link rel='stylesheet' href='styles.css'>
+
+</head>
+
+<body>
+    <div class="bg" style="background-image: url(https://image.ibb.co/gggvEw/Pastel_City1_2.png)">
+        <h1></h1>
+        <h1>Hello {{user}} !!!</h1>
+    
+        <p>
+            Your student ID is {{sID}}
+        </p>
+        <p> {{timesinfo}} </p>
+        <p> {{statusMsg}} </p>            
+        
+        <form id="toPetRoomform" name = "toPetRoomform" action="https://user.tjhsst.edu/2019exiong/petRoom" method="get">
+            <input type="hidden" name="full_user_name" id="full_user_name" value="{{fullname}}" >
+            <input type="hidden" name="user_name" id="user_name" value="{{user}}" >
+            <input type="hidden" name="student_id" id="student_id" value="{{sID}}" >
+        </form>
+        
+        <h2 class="section_title"></h2>
+        
+        <div ><button id="goPetRoom" class="button roombutton">Click to Enter Your Room</button></div>
+ 
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        $( document ).ready(function(data) {
+                    
+            $('#goPetRoom').bind("click", function() {
+                $("#toPetRoomform").submit();
+                // $('#sendForm').trigger('click');
+            }); 
+                    
+        });
+    </script>
+     
+</body>
+
+</html>

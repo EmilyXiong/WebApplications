@@ -1,0 +1,12 @@
+body{
+    background-image: url("http://data.whicdn.com/images/282026736/large.gif")
+}
+
+h1{
+    text-align: center;
+    font-family: Arial;
+}
+p{
+    font-size: 1.4em;
+    font-family: Arial;
+}

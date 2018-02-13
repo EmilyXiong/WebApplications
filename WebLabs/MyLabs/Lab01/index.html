@@ -1,0 +1,86 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            
+            <title>States Game</title>
+            <meta name="description" content="tutorial files">
+                <meta name="author" content="2019exiong">
+                    
+                    <link rel="stylesheet" href="css/styles.css">
+                        
+                        
+    </head>
+    
+    <body>
+        <div id="playGame" class="masterContainer">
+            <h1>States Game</h1>
+            <p>Find the names of all the states bordering this one. Are you ready to begin? If so, press start.</p>
+            
+            <!-- This is Game Status Area -->
+            <div class="allItem" style="color:white;">Game Status</div>
+            <div class="subContainer allItem">
+               <div id="startDiv"  style="display:none;margin-left: 10px;margin-bottom: 10px;" >List borders for this state</div>
+               <div id="timerDiv"  style="display:none;margin-left: 10px;margin-bottom: 10px;" >Time remaining: </div>
+               <div id="answers" style="margin-left: 10px;">
+               		<span style="color:blue">Here are your entered answers:</span><br>
+               		<span id="enteredStates"></span>
+               </div>
+               <div id="correctAnswers" style="display:none;margin-left: 10px;margin-top: 10px;">
+               		<span style="color:blue">The correct answers are:</span><br>
+                		<span id="correctStates"></span>
+               </div>  
+            </div>
+            
+            <!-- This is Message Board Area -->
+            <div class="allItem" style="color:white">Message Board</div>
+            <div id="message" class="allItem">
+               		<span style="color:red"></span><br>
+            </div>
+            
+            
+            <button id="startButton" class="button allItem" onclick="startGame()">Start Game</button>
+            <div class="allItem">
+            		<div style="margin-top: 10px;">
+                		<div style="color: white; font-size: 1.0em;">Enter the bordering state. Using , to separate them if you enter multiple states:</div>
+                		<input id = "stateInput" onkeyup="checkState(event)" type="text" placeholder="Enter Borders Here" size="60" style="height:30px;">
+                    <br><br><br>
+                    <button id="submitAnswer" class="button" onclick="checkBorder()" disabled >Submit Your Answer</button>
+                    <button  id="tip" class="button" onclick="ShowHint()" disabled>Need a Hint</button>
+                    <button  id="finishGame" class="button" onclick="endGame()">Finish Game</button>
+                 </div>
+            		<br><br>
+            		<div id="scoreDiv" class="allItem" >
+                		<h4>Your result:</h4>
+                		<table style="color: white; font-size: 1.0em;">
+                			<tr>
+                				<td>Total States Played:</td>
+                				<td  id="totalCount"></td>
+                			</tr>
+                			<tr>
+                				<td>You Won:</td>
+                				<td  id="totalWon"></td>
+                			</tr>
+                			<tr>
+                				<td>You Lost:</td>
+                				<td  id="totalLost"></td>
+                			</tr>
+                			<tr>
+                				<td>States You Won:</td>
+                				<td  id="resultWonStates"></td>
+                			</tr>
+                			<tr>
+                				<td>States You Lost:</td>
+                				<td  id="resultLostStates"></td>
+                			</tr>               		
+                		
+                		</table>
+            		</div>
+            </div>
+        </div>
+        <div id="gameOver" class="masterContainer" style="display:none;">
+        		<h1>Game Over!  Come Back Soon! </h1>
+        </div>
+        <script src="js/scripts.js"></script>
+        <script type="text/javascript" src="js/info.js"></script> 
+    </body>
+</html>

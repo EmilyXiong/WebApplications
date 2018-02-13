@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <link rel='stylesheet' href='styles.css'>
+
+</head>
+<body>
+    <div class="bg" style="background-image: url(https://vectortoons.com/wp-content/uploads/2016/05/inside-a-pet-store-background1.jpg)">
+        <h1>Hello {{user}}!</h1>
+        <h1>Welcome to Virtupets Store. Here you can buy your pets </h1>
+        <h2 class="section_title"></h2>
+        <button id="backToPetRoom" class="button button4">Click Back to Pet Room</button><br>
+        <form id="toPetRoomform" name = "toPetRoomform" action="https://user.tjhsst.edu/2019exiong/petRoom" method="get">
+            <input type="hidden" name="full_user_name" id="full_user_name" value="{{fullname}}" >
+            <input type="hidden" name="user_name" id="user_name" value="{{user}}" >
+            <input type="hidden" name="student_id" id="student_id" value="{{sID}}" >
+        </form>
+        <div style="position:absolute; bottom:0px; width:100%">
+            <div class="leftBox">
+                <div class="storeTitle">You currently have:</div>
+                <br>
+                <div id="cat" style="margin-left:20px;margin-bottom:10px;display: block;clear:both;"></div>
+                <br>
+                <div id="dog" style="margin-left:20px;margin-bottom:10px;display: block;clear:both;"></div>
+                <br>
+                <div id="bunny" style="margin-left:20px;margin-bottom:10px;display: block;clear:both;"></div>
+                <br>
+                <div id="frog" style="margin-left:20px;margin-bottom:10px;display: block;clear:both;"></div>
+            </div>
+            
+            <div class="midBox">
+                <div class="storeTitle">Your money balance:</div>
+                <label id="balance" style="margin-left:200px;height=40px; font-size: 2.0em; color:green;"></label>
+            </div>
+            
+            <div class="rightBox" >
+                <div class="storeTitle" style="margin-bottom:10px;">You can buy the following pets:</div>
+                <div style="margin-left:40px;margin-bottom:10px;display: block;clear:both;">
+                    <IMG style='height:40px; width:35px;' SRC='https://i.imgur.com/5aYWoN3.png'>
+                    <input type="text" id="nCats" name="nCats" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label> * $150.00 = </label>
+                    <label id="catTotal">0</label>
+                </div>
+                <div style="margin-left:40px;margin-bottom:10px;display: block;clear:both;">
+                    <IMG style='height:40px; width:35px;' SRC='https://i.imgur.com/ClwIdQW.png'>
+                    <input type="text" id="nDogs" name="nDogs" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label> * $250.00 = </label>
+                    <label id="dogTotal">0</label>
+                </div>
+                <div style="margin-left:40px;margin-bottom:10px;display: block;clear:both;">
+                    <IMG style='height:40px; width:35px;' SRC='https://i.imgur.com/OOr7jt4.png'>
+                    <input type="text" id="nBunny" name="nBunny" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label> * $100.00 = </label>
+                    <label id="bunnyTotal">0</label>
+                </div>
+                <div style="margin-left:40px;margin-bottom:5px;display: block;clear:both;">
+                    <IMG style='height:40px; width:35px;' SRC='https://i.imgur.com/Ys86cC6.png'>
+                    <input type="text" id="nFrog" name="nFrog" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label> * $50.00 = </label>
+                    <label id="frogTotal">0</label>
+                </div>
+                <div style="margin-left:80px;margin-bottom:10px;display: block;clear:both;">
+                    <label>Your Grand Total of this Purchase: $</label>
+                    <label id="grandTotal">0</label><label>.00</label>
+                    <button id="buyPets" class="button button4" style="float:right">Buy Selected Pets</button><br>
+                </div>
+            </div>
+            
+        </div>
+        
+
+    
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    
+    <script>
+        var balance = 0;
+        var iniCat = 0;
+        var iniDog = 0;
+        var iniBunny = 0;
+        var iniFrog = 0;
+        $( document ).ready(function(data) {
+            var id = {{sID}};
+            $.get( "getPetCounts", {student_id : id})
+                .done(function( data ) {
+                console.log(data);
+                pets = JSON.parse(data);
+                resultStr = "You have ";
+                for(var i = 0; i < pets.length; i++){
+                    resultStr= resultStr + " " + pets[i].count + " " + pets[i].pet_name;
+                    if(pets[i].pet_name == 'cat'){
+                        catHtml = "";
+                        iniCat = parseInt(pets[i].count);
+                        for ( k = 0; k < iniCat; k++){
+                            catHtml = catHtml + "<div style='float: left;'><IMG style='height:50px; width:40px;' SRC='https://i.imgur.com/5aYWoN3.png'> </div>";
+                        }
+                        document.getElementById('cat').innerHTML = document.getElementById('cat').innerHTML + catHtml;
+                    }
+                    else if(pets[i].pet_name == 'dog'){
+                        dogHtml = "";
+                        iniDog = parseInt(pets[i].count);
+                        for ( k = 0; k < iniDog; k++){
+                            dogHtml = dogHtml + "<div style='float: left;'><IMG style='height:60px; width:50px;' SRC='https://i.imgur.com/ClwIdQW.png'> </div>";
+                        }
+                        document.getElementById('dog').innerHTML = document.getElementById('dog').innerHTML + dogHtml;
+                    }
+                    else if(pets[i].pet_name == 'bunny'){
+                        bunnyHtml = "";
+                        iniBunny = parseInt(pets[i].count);
+                        for ( k = 0; k < iniBunny; k++){
+                            bunnyHtml = bunnyHtml + "<div style='float: left;'><IMG style='height:50px; width:40px;' SRC='https://i.imgur.com/OOr7jt4.png'> </div>";
+                        }
+                        document.getElementById('bunny').innerHTML = document.getElementById('bunny').innerHTML + bunnyHtml;
+                    }
+                    else{
+                        frogHtml = "";
+                        iniFrog = parseInt(pets[i].count);
+                        for ( k = 0; k < iniFrog; k++){
+                            frogHtml = frogHtml + "<div style='float: left;'><IMG style='height:35px; width:35px;' SRC='https://i.imgur.com/Ys86cC6.png'> </div>";
+                        }
+                        document.getElementById('frog').innerHTML = document.getElementById('frog').innerHTML + frogHtml;
+                    }
+                }
+            });
+            
+            
+            // get money balance
+
+            $.get( "getMoneyBalance", {student_id : id})
+                .done(function( data ) {
+                console.log(data);
+                money = JSON.parse(data);
+                balance = parseInt(money[0].money);
+                $("#balance").text("$" + money[0].money+".00");
+            });
+
+            $('#backToPetRoom').bind("click", function() {
+                $("#toPetRoomform").submit();
+            }); 
+            
+            $("#nCats" ).focusout(function() {
+                var count = $("#nCats").val();
+                if (count != ""){
+                    calGrandTotal();
+                    itotal = parseInt($("#grandTotal").text());
+                    if (balance < itotal){
+                        alert("You don't have enough money to buy " + count + " cats!");
+                        $("#nCats").val("0");
+                        $("#catTotal").text("0");
+                    }
+                }
+                else{
+                    $("#nCats").val("0");
+                }
+                calGrandTotal();
+            });
+            
+            $("#nDogs" ).focusout(function() {
+                var count = $("#nDogs").val();
+                if (count != ""){
+                    calGrandTotal();
+                    itotal = parseInt($("#grandTotal").text());
+                    if (balance < itotal){
+                        alert("You don't have enough money to buy " + count + " dogs!");
+                        $("#nDogs").val("0");
+                        $("#dogTotal").text("0");
+                    }
+                }
+                else{
+                    $("#nDogs").val("0");
+                }
+                calGrandTotal();
+            });
+            
+            $("#nBunny" ).focusout(function() {
+                var count = $("#nBunny").val();
+                if (count != ""){
+                    calGrandTotal();
+                    itotal = parseInt($("#grandTotal").text());
+                    if (balance < itotal){
+                        alert("You don't have enough money to buy " + count + " bunnies!");
+                        $("#nBunny").val("0");
+                        $("#bunnyTotal").text("0");
+                    }
+                }
+                else{
+                    $("#nBunny").val("0");
+                }
+                calGrandTotal();
+            });
+               
+            $("#nFrog" ).focusout(function() {
+                var count = $("#nFrog").val();
+                if (count != ""){
+                    calGrandTotal();
+                    itotal = parseInt($("#grandTotal").text());
+                    if (balance < itotal){
+                        alert("You don't have enough money to buy " + count + " frogs!");
+                        $("#nFrog").val("0");
+                        $("#frogsTotal").text("0");
+                    }
+                }
+                else{
+                    $("#nFrog").val("0");
+                }
+                calGrandTotal();
+            });   
+            
+            $('#buyPets').bind("click", function() {
+                
+                if(confirm("Are you sure you want to make this purchase?" )){
+                    
+                    
+                    icat = parseInt( $("#nCats").val() );
+                    if (icat > 0){
+                        var action = "update";
+                        if (iniCat == 0){
+                            action = "insert";
+                        }
+                        $.get( "updatePetCount", {student_id:id, pet_name:'cat', count:iniCat+icat, action:action })
+                            .done(function( data ) {
+                        });
+                        iniCat = iniCat + icat;
+                        catHtml = "";
+                        for ( k = 0; k < icat; k++){
+                            catHtml = catHtml + "<div style='float: left;'><IMG style='height:50px; width:40px;' SRC='https://i.imgur.com/5aYWoN3.png'> </div>";
+                        }
+                        document.getElementById('cat').innerHTML = document.getElementById('cat').innerHTML + catHtml;
+                    }
+   
+                    idog = parseInt( $("#nDogs").val() );
+                    if (idog > 0){
+                        var action = "update";
+                        if (iniDog == 0){
+                            action = "insert";
+                        }
+                        $.get( "updatePetCount", {student_id:id, pet_name:'dog', count:iniDog+idog, action:action })
+                            .done(function( data ) {
+                        });
+                        iniDog = iniDog + idog;
+                        dogHtml = "";
+                        for ( k = 0; k < idog; k++){
+                            dogHtml = dogHtml + "<div style='float: left;'><IMG style='height:60px; width:50px;' SRC='https://i.imgur.com/ClwIdQW.png'> </div>";
+                        }
+                        document.getElementById('dog').innerHTML = document.getElementById('dog').innerHTML + dogHtml;
+                    }
+                    
+                    
+                    ibunny = parseInt( $("#nBunny").val() );
+                    if (ibunny > 0){
+                        var action = "update";
+                        if (iniBunny == 0){
+                            action = "insert";
+                        }
+                        $.get( "updatePetCount", {student_id:id, pet_name:'bunny', count:iniBunny+ibunny, action:action })
+                            .done(function( data ) {
+                        });
+                        iniBunny = iniBunny + ibunny;
+                        bunnyHtml = "";
+                        for ( k = 0; k < ibunny; k++){
+                            bunnyHtml = bunnyHtml + "<div style='float: left;'><IMG style='height:50px; width:40px;' SRC='https://i.imgur.com/OOr7jt4.png'> </div>";
+                        }
+                        document.getElementById('bunny').innerHTML = document.getElementById('bunny').innerHTML + bunnyHtml;
+                    }
+                    
+                    ifrog = parseInt( $("#nFrog").val() );
+                    if (ifrog > 0){
+                        var action = "update";
+                        if (iniFrog == 0){
+                            action = "insert";
+                        }
+                        $.get( "updatePetCount", {student_id:id, pet_name:'frog', count:iniFrog+ifrog, action:action })
+                            .done(function( data ) {
+                        });
+                        iniFrog = iniFrog + ifrog;
+                        frogHtml = "";
+                        for ( k = 0; k < ifrog; k++){
+                            frogHtml = frogHtml + "<div style='float: left;'><IMG style='height:35px; width:35px;' SRC='https://i.imgur.com/Ys86cC6.png'> </div>";
+                        }
+                        document.getElementById('frog').innerHTML = document.getElementById('frog').innerHTML + frogHtml;
+                    }
+                    
+                    itotal = parseInt( $("#grandTotal").text() );
+                    if (itotal > 0){
+                        balance = balance - itotal;
+
+                        $.get( "updateBalance", {student_id:id, balance:balance })
+                            .done(function( data ) {
+                        });
+                        $("#balance").text("$" + balance+".00");
+                        $("#nCats").val("0");
+                        $("#catTotal").text("0");
+                        $("#nDogs").val("0");
+                        $("#dogTotal").text("0");
+                        $("#nFrog").val("0");
+                        $("#frogsTotal").text("0");
+                        $("#grandTotal").text("0");
+                        $("#nBunny").val("0");
+                        $("#bunnyTotal").text("0");
+                    }
+                }
+                
+            }); 
+            
+            
+            console.log( "page loaded and jQuery is ready" );
+        });
+        
+        function calGrandTotal(){
+            var grandTotal = 0;
+            var catTotal = parseInt( $("#nCats").val() ) * 150;
+            $("#catTotal").text(catTotal );
+            
+            var dogTotal = parseInt( $("#nDogs").val() ) * 250;
+            $("#dogTotal").text(dogTotal );
+            
+            var bunnyTotal = parseInt( $("#nBunny").val() )  * 100;
+            $("#bunnyTotal").text(bunnyTotal);
+            
+            var frogTotal = parseInt( $("#nFrog").val() ) * 50;
+            $("#frogTotal").text(frogTotal );
+            
+            $("#grandTotal").text(catTotal + dogTotal + bunnyTotal + frogTotal);
+            
+        }
+    </script>
+</body>
+
+</html>  

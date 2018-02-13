@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <link rel='stylesheet' href='styles.css'>
+
+</head>
+<body>
+    <div class="bg" style="background-image: url(https://i.imgur.com/hXTDYlA.png)">
+        <h1>Hello {{user}} !!!</h1>
+        <p>Welcome to Virtupets this is your pet room! Your student id is {{sID}} </p>
+        <p id="petcounts"></p>
+        <h2 class="section_title"></h2>
+        <button id="toPetStore" class="button button4">Click to Enter the Pet Store</button>
+        
+        <div id="petFloor" class="petContainer">
+            <div>
+                <div class="storeTitle">Your money balance:</div>
+                <label id="balance" style="margin-left:200px;height=40px; font-size: 2.0em; color:green;"></label>
+            </div>
+        <div id = "msg"></div>
+            
+            
+            
+        </div>
+        <form id="toStoreform" name = "toStoreform" action="https://user.tjhsst.edu/2019exiong/petStore" method="get">
+            <input type="hidden" name="full_user_name" id="full_user_name" value="{{fullname}}" >
+            <input type="hidden" name="user_name" id="user_name" value="{{user}}" >
+            <input type="hidden" name="student_id" id="student_id" value="{{sID}}" >
+        </form>
+    
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        var balance = 0;
+        $( document ).ready(function(data) {
+            var id = $("#student_id").val();
+            $.get( "getPetCounts", {student_id : id})
+                .done(function( data ) {
+                console.log(data);
+                pets = JSON.parse(data);
+                resultStr = "You have ";
+                for(var i = 0; i < pets.length; i++){
+                    resultStr= resultStr + " " + pets[i].count + " " + pets[i].pet_name;
+                    if(pets[i].pet_name == 'cat'){
+                        catHtml = "";
+                        for ( k = 0; k < parseInt(pets[i].count); k++){
+                            catHtml = catHtml + "<div class='tooltip' style='float: left;'><IMG style='height:150px; width:100px;' SRC='https://i.imgur.com/5aYWoN3.png'><span class='tooltiptext'>mew, mew, ... feed me!</span></div>";
+                        }
+                        document.getElementById('petFloor').innerHTML = document.getElementById('petFloor').innerHTML + catHtml;
+                    }
+                    else if(pets[i].pet_name == 'dog'){
+                        dogHtml = "";
+                        for ( k = 0; k < parseInt(pets[i].count); k++){
+                            dogHtml = dogHtml + "<div class='tooltip' style='float: left;'><IMG style='height:150px; width:100px;' SRC='https://i.imgur.com/ClwIdQW.png'> <span class='tooltiptext'>Arf, Arf ... give me yummy!</span></div>";
+                        }
+                        document.getElementById('petFloor').innerHTML = document.getElementById('petFloor').innerHTML + dogHtml;
+                    }
+                    else if(pets[i].pet_name == 'bunny'){
+                        bunnyHtml = "";
+                        for ( k = 0; k < parseInt(pets[i].count); k++){
+                            bunnyHtml = bunnyHtml + "<div class='tooltip' style='float: left;'><IMG style='height:150px; width:100px;' SRC='https://i.imgur.com/OOr7jt4.png'> <span class='tooltiptext'>I am hungry...!</span></div>";
+                        }
+                        document.getElementById('petFloor').innerHTML = document.getElementById('petFloor').innerHTML + bunnyHtml;
+                    }
+                    else{
+                        frogHtml = "";
+                        for ( k = 0; k < parseInt(pets[i].count); k++){
+                            frogHtml = frogHtml + "<div class='tooltip' style='float: left;'><IMG style='height:40px; width:40px;' SRC='https://i.imgur.com/Ys86cC6.png'><span class='tooltiptext'>ribbit, ribbit,... insets please!</span> </div>";
+                        }
+                        document.getElementById('petFloor').innerHTML = document.getElementById('petFloor').innerHTML + frogHtml;
+                    }
+                }
+                if(pets.length > 0){
+                    $("#petcounts").html(resultStr);
+                    $("#msg").html("<p>Move mouse over a pet to pet them. Click to feed them. You will earn money by feeding your pets!!!</p>")
+                }
+                else{
+                    $("#petcounts").html("You don't have any pet yet. Please go to the pet store to buy them.");
+                }
+            })
+            
+             $.get( "getMoneyBalance", {student_id : id})
+                .done(function( data ) {
+                console.log(data);
+                money = JSON.parse(data);
+                balance = parseInt(money[0].money);
+                $("#balance").text("$" + money[0].money+".00");
+            });
+            
+            $('#toPetStore').bind("click", function() {
+                $("#toStoreform").submit();
+                
+            }); 
+            
+            $('#petFloor').bind("click", function() {
+                balance = balance +10;
+                $.get( "updateBalance", {student_id:id, balance:balance })
+                            .done(function( data ) {
+                        });
+                        $("#balance").text("$" + balance+".00");
+                
+            }); 
+            
+            console.log( "page loaded and jQuery is ready" );
+        });
+    </script>
+</body>
+
+</html>  

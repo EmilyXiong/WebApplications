@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <link rel='stylesheet' href='/css/style.css'>
+
+</head>
+
+<body bgcolor="#6ca1f7">
+    <p>
+        Welcome to mySQL database!
+    </p>
+    <h2 class="section_title"></h2>
+    <a id="link_1" href="javascript:void(0)">Click to Enter Your Data</a>
+    <input type="text" id="ur_data" placeholder="Enter Data">
+    <h3>Enter Data</h3>
+    <div>Your info is:</div>
+    <div><textarea rows="15" cols="100"></textarea></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+      $("#link_1").click(function(){
+            dataBox = document.getElementById('ur_data');
+            var datas = dataBox.value;
+            console.log("data is " + datas)
+            $.get( "renewedPage", {user_data : datas})
+                .done(function( data ) {
+                    console.log( "string response generated on the server is: " + data );
+                     $("h3").html(data);
+                });
+        });
+        console.log( "page loaded and jQuery is ready" );
+    </script>    
+</body>
+
+</html>

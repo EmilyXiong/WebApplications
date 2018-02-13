@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <link rel='stylesheet' href='/css/style.css'>
+
+</head>
+
+<body bgcolor="#6ca1f7">
+    <h1>Hello, {{fullname}}</h1>
+    <p>
+        Welcome to the Word List Generator!
+    </p>
+    <img src="https://static1.squarespace.com/static/560a37a4e4b0ce38798c28f5/t/5889b0bcdb29d65fe81149ea/1485418703196/?format=500w">
+    <h2 class="section_title"></h2>
+    <a id="link_1" href="javascript:void(0)">Click to Enter Your Bag of Letters</a>
+    <input type="text" id="ur_letters" placeholder="Enter Letters">
+    <h3>Enter Letters</h3>
+    <div>Your words are:</div>
+    <div><textarea rows="15" cols="100"></textarea></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+      $("#link_1").click(function(){
+            nameBox = document.getElementById('ur_letters');
+            var letters = nameBox.value;
+            $("textarea").html("");
+            $.get( "renewedPage", {letter_bag : letters.toLowerCase()})
+                .done(function( data ) {
+                    console.log( "string response generated on the server is: " + data );
+                    var newStr = 'No word found. Please try another set of letters.'
+                    var wLengthDict = {};
+                    if(data.length > 1){
+                        for (i = 0; i<data.length; i++){
+                            newStr = data[i];
+                            wLength = newStr.length;
+                            if(wLengthDict[wLength] != null){
+                                wLengthDict[wLength].push(newStr);
+                            }
+                            else{
+                                wLengthDict[wLength] = [newStr];
+                            }
+                        }
+                    }
+                    var toRet = "";
+                    for (var key in wLengthDict) {
+                        if (wLengthDict.hasOwnProperty(key)) {           
+                            toRet += key +" letter words: "+ wLengthDict[key] + "\n\n";
+                        }
+                    }
+                    $("textarea").html(toRet);
+                });
+        });
+    </script>    
+</body>
+
+</html>

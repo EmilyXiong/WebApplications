@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+    <head>
+    </head>
+    <body bgcolor="#E6E6FA">
+        <h1 id='default_title'>High Low Game</h1>
+        <p id='some_p'>To play this game, first enter your username, then the room you wish to join. Don't join rooms more than once unless you reload the page.</p>
+        <p><div id="myNumber">5</div>
+        <p><div id="myGuess"></div>
+        <p>
+            <button type="button" onclick="highFunc()">High</button>
+            <button type="button" onclick="lowFunc()">Low</button>
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current Score:</label>
+            <span id="scores"></span>
+        </p>
+        <p>
+            <button type="button" id="enterUser" onclick="makeUsername()">Enter Username</button>
+            <input type="text" id="user_name" placeholder="enter username">
+        </p>
+        <p>
+            <button type="button" id="enterRoom" onclick="joinSecretRooom()">Join Secret Room</button>
+            <input type="text" id="room_name" placeholder="enter room name">
+        </p>
+        <p>
+            <button type="button" onclick="listSecretRooms()">List Secret Rooms</button>
+            <span id='room_list'>[not retrieved]</span>
+        </p>
+        <p>
+            <button type="button" onclick="listUserByRoom()">List Users by Room</button>
+            <span id='room_list'><select id='select_room' style = "width: 100px;" onchange="getUsersByRoom()">
+								</select>
+			</span><span id="user_list"></span>
+        </p>
+    		<div id='score' style="margin-left:30px; color:blue; background-color: white; width: 800px; height:160px; border: 3px solid #775eb2;">Game Status By Room:&nbsp;&nbsp;&nbsp;
+    			<span><select id='refresh_room_list' style = "width: 100px;" onchange="getGameStatusByRoom()">
+								</select>
+			</span><button type="button" id="refreshStatus" onclick="getRoomList()">Refresh Room List</button><br><br>
+			 <span id="game_status"></span>
+    		
+    		</div>
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>    
+        <script>
+            
+            // CREATE THE SOCKET OBJECT AT LOAD TIME
+            var socket = io.connect('http://localhost:8080/', { path: '/socket.io/'  });
+            
+            
+            var someData = [];
+            socket.on('password', function(data){
+                console.log('secret message received!!!');
+                p = document.getElementById('some_p');
+                p.innerHTML = data;
+            });
+            
+            socket.on('all_rooms', function(data){
+                console.log('room list recieved!!!');
+                s = document.getElementById('room_list');
+                s.innerHTML = data;
+                console.log(data);
+            });
+            
+            socket.on('all_rooms_by_user', function(data){
+                console.log('room list recieved!!!');
+                s = document.getElementById('select_room');
+                var roomlist = '<option value="" selected></option>';
+                for(var index in data){
+                		roomlist = roomlist + '<option value="' + data[index] + '">' + data[index] + '</option>';
+                }
+                s.innerHTML = roomlist;
+                console.log(data);
+            });
+            
+            socket.on('refresh_room_list', function(data){
+                console.log('room list recieved!!!');
+                s = document.getElementById('refresh_room_list');
+                var roomlist = '<option value="" selected></option>';
+                for(var index in data){
+                		roomlist = roomlist + '<option value="' + data[index] + '">' + data[index] + '</option>';
+                }
+                s.innerHTML = roomlist;
+                console.log(data);
+            });
+            
+            socket.on('all_users', function(data){
+                console.log('username list recieved!!!');
+                s = document.getElementById('users_list');
+                s.innerHTML = data;
+                console.log(data);
+            });   
+            
+            socket.on('login_needed', function(data){
+                console.log('login needed message recieved!!!');
+                obj = document.getElementById('myGuess');
+                obj.innerHTML = data.fontcolor("red") ;
+                console.log(data);
+            });
+            
+            socket.on('answer', function(data){
+                var obj = document.getElementById('myNumber');
+                obj.innerHTML = data.number ;
+                obj = document.getElementById('myGuess');
+                obj.innerHTML = data.guess ;
+                console.log(data);
+                obj = document.getElementById('scores');
+                obj.innerHTML = data.score;
+            });
+            
+            socket.on('all_users_by_room', function(data){
+            		console.log('user list by room recieved!!!');
+                s = document.getElementById('user_list');
+                s.innerHTML = data;
+                console.log(data);
+            });
+            
+            socket.on('game_status_by_room', function(data){
+	        		console.log('user list by room recieved!!!');
+	            s = document.getElementById('game_status');
+	            var status = 'User and their scores are:  user --> score:<br>';
+	            for (var index in data){
+	            		status = status + data[index].user  + " -- > " + data[index].score + "&nbsp;&nbsp";
+	            }
+                s.innerHTML = status;
+	            console.log(status);
+        		});
+            
+            // --------- client JS functions
+            function highFunc(){
+                socket.emit('guess','high');
+            }
+            function lowFunc(){
+                socket.emit('guess','low');   
+            }
+            function makeUsername(){
+                i_rn = document.getElementById("user_name");
+                socket.emit("make_user_name", i_rn.value);
+                document.getElementById("enterUser").disabled = true;
+            }
+            function joinSecretRooom() {
+                i_rn = document.getElementById("room_name");
+                socket.emit("join_secret_room", i_rn.value );
+                document.getElementById("enterRoom").disabled = true;
+            }
+            function listSecretRooms() {
+                socket.emit("list_all_rooms", 'listSecretRooms' );
+            }
+            function listUserByRoom() {
+                socket.emit("list_all_rooms", 'listUserByRoom' );
+            }
+            function getRoomList() {
+                socket.emit("list_all_rooms", 'getRoomList' );
+            }
+            function getUsersByRoom(){
+            		var dropDwonObj = document.getElementById("select_room");
+            		var selectedRoom = dropDwonObj.options[dropDwonObj.selectedIndex].value;
+            		socket.emit("list_users_by_room", selectedRoom );
+            }
+            function getGameStatusByRoom(){
+            		var dropDwonObj = document.getElementById("refresh_room_list");
+        			var selectedRoom = dropDwonObj.options[dropDwonObj.selectedIndex].value;
+	        		socket.emit("list_game_status", selectedRoom );
+        		}
+
+        </script>
+  </body>
+</html>

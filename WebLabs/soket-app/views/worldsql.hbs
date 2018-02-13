@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <link rel='stylesheet' href='/css/style.css'>
+
+</head>
+
+<body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="content">
+          <ul>
+            <li>
+              <h2 class="section_title"></h2>
+              <span id='cont_list'><select id='select_cont' style = "width: 100px;">
+                    <option value="Asia">Asia</option>
+                    <option value="North America">North America</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Europe">Europe</option>
+                    <option value="South America">South America</option>
+                    <option value="Antarctica">Antarctica</option>
+                    <option value="Oceania">Oceania</option>
+			  </select>
+			  </span>
+              <a id="link_5" href="javascript:void(0)">This Continent's Countries</a>
+              <h3>[Country Placeholder]</h3>
+            </li>
+          </ul>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        // link click function
+        $("#link_5").click(function(){
+            var dropDwonObj = document.getElementById("select_cont");
+            var selectedCont = dropDwonObj.options[dropDwonObj.selectedIndex].value;
+            $.get( "myCountries", {continent : selectedCont})
+                .done(function( data ) {
+                    console.log( "string response generated on the server is: " + data );
+                     $("h3").html(data);
+                });
+        });
+        console.log( "page loaded and jQuery is ready" );
+        
+    });
+    </script>
+</body>
+
+</html>
